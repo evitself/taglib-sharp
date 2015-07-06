@@ -551,6 +551,12 @@ namespace TagLib.Id3v2 {
 					new string [0];
 			}
 		}
+
+        public static StringType? ForceOverrideReadingTextType
+        {
+            get;
+            set;
+        }
 		
 		/// <summary>
 		///    Gets and sets the text encoding to use when rendering
@@ -855,7 +861,16 @@ namespace TagLib.Id3v2 {
 			
 			// read the string data type (the first byte of the
 			// field data)
-			encoding = (StringType) data [0];
+            if (ForceOverrideReadingTextType != null)
+            {
+                encoding = ForceOverrideReadingTextType.Value;
+            }
+            else
+            {
+                encoding = (StringType)data[0];
+            }
+			
+            encoding = StringType.UTF8;
 			List<string> field_list = new List<string> ();
 			
 			ByteVector delim = ByteVector.TextDelimiter (encoding);
